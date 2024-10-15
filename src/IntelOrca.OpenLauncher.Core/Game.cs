@@ -6,7 +6,7 @@ namespace IntelOrca.OpenLauncher.Core
 {
     public class Game
     {
-        public static Game OpenRCT2 => new Game("OpenRCT2", "openrct2", true, new RepositoryName("OpenRCT2", "OpenRCT2"), new RepositoryName("Limetric", "OpenRCT2-binaries"));
+        public static Game OpenRCT2 => new Game("OpenRCT2", "openrct2", true, new RepositoryName("OpenRCT2", "OpenRCT2"), new RepositoryName("OpenRCT2", "OpenRCT2-binaries"));
         public static Game OpenLoco => new Game("OpenLoco", "openloco", false, new RepositoryName("OpenLoco", "OpenLoco"));
 
         public string Name { get; }
