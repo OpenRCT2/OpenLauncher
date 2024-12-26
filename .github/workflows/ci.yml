@@ -11,6 +11,9 @@ jobs:
           rid: linux-x64
         - os: windows
           rid: win-x64
+        - os: macos
+          rid: macos-universal
+            
 
     runs-on: ${{ matrix.os }}-latest
     steps:
@@ -23,12 +26,20 @@ jobs:
     - name: Restore
       run: dotnet restore
     - name: Build
+      if: runner.os != 'macOS'
       run: dotnet build -c Release --no-restore
     - name: Test
       run: dotnet test --no-restore
     - name: Publish
       working-directory: src/openlauncher
+      if: runner.os != 'macOS'
       run: dotnet publish -c Release -r ${{ matrix.rid }} --self-contained
+    - name: Build (macOS)
+      if: runner.os == 'macOS'
+      run: ./build-mac.sh
+    - name: Package (macOS)
+      if: runner.os == 'macOS'
+      run: ./package-mac.sh
     - name: Upload artifacts
       uses: actions/upload-artifact@v4
       with:
@@ -108,4 +119,5 @@ jobs:
             artifacts/openlauncher*.exe
             artifacts/openlauncher*.rpm
             artifacts/openlauncher*.deb
+            artifacts/OpenLauncher.zip
 
