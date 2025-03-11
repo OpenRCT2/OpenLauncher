@@ -13,7 +13,6 @@ jobs:
           rid: win-x64
         - os: macos
           rid: macos-universal
-            
 
     runs-on: ${{ matrix.os }}-latest
     steps:
