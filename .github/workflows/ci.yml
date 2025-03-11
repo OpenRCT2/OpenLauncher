@@ -13,7 +13,6 @@ jobs:
           rid: win-x64
         - os: macos
           rid: macos-universal
-            
 
     runs-on: ${{ matrix.os }}-latest
     steps:
@@ -119,5 +118,5 @@ jobs:
             artifacts/openlauncher*.exe
             artifacts/openlauncher*.rpm
             artifacts/openlauncher*.deb
-            artifacts/OpenLauncher.zip
+            artifacts/OpenLauncher*.zip
 
