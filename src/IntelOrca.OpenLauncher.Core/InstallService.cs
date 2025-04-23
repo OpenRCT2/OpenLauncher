@@ -30,8 +30,15 @@ namespace IntelOrca.OpenLauncher.Core
         {
             get
             {
-                var isWindows = RuntimeInformation.IsOSPlatform(OSPlatform.Windows);
-                var binaryName = isWindows ? $"{_game.BinaryName}.exe" : _game.BinaryName;
+                string binaryName;
+                if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows)) {
+                    binaryName = $"{_game.BinaryName}.exe";
+                } else if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX)) {
+                    // We need to use Name and not BinaryName since BinaryName isn't capitalized
+                    binaryName = $"{_game.Name}.app/Contents/MacOS/{_game.Name}";
+                } else {
+                    binaryName = _game.BinaryName;
+                }
                 return Path.Combine(BinPath, binaryName);
             }
         }
@@ -158,7 +165,11 @@ namespace IntelOrca.OpenLauncher.Core
         {
             if (uri.LocalPath.EndsWith(".zip", StringComparison.OrdinalIgnoreCase))
             {
-                ZipFile.ExtractToDirectory(archivePath, outDirectory, overwriteFiles: true);
+                if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX)) {
+                    ExtractArchiveMac(archivePath, outDirectory);
+                } else {
+                    ZipFile.ExtractToDirectory(archivePath, outDirectory, overwriteFiles: true);
+                }
             }
             else if (uri.LocalPath.EndsWith(".AppImage", StringComparison.OrdinalIgnoreCase))
             {
@@ -191,6 +202,14 @@ namespace IntelOrca.OpenLauncher.Core
             {
                 throw new Exception("Unknown file format to extract.");
             }
+        }
+
+        private void ExtractArchiveMac(string archivePath, string outDirectory) {
+            var dittoProcess = new Process();
+            var args = $"-k -x \"{archivePath}\" \"{outDirectory}\"";
+            dittoProcess.StartInfo = new ProcessStartInfo("/usr/bin/ditto", args);
+            dittoProcess.Start();
+            dittoProcess.WaitForExit();
         }
     }
 }
