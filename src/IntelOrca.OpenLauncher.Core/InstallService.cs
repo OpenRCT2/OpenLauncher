@@ -17,13 +17,26 @@ namespace IntelOrca.OpenLauncher.Core
 
         private readonly Game _game;
 
-
-        private string BinPath => Path.Combine(_game.DefaultLocation, "bin");
-        private string VersionFilePath => Path.Combine(_game.DefaultLocation, "bin", ".version");
-
         public InstallService(Game game)
         {
             _game = game;
+        }
+
+        public string BinPath
+        {
+            get
+            {
+                var localAppData = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
+                return Path.Combine(localAppData, _game.Name, "bin");
+            }
+        }
+
+        public string VersionFilePath
+        {
+            get
+            {
+                return Path.Combine(BinPath, ".version");
+            }
         }
 
         public string ExecutablePath
