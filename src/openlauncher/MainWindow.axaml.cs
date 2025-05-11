@@ -250,7 +250,7 @@ namespace openlauncher
                     if (build.Assets.Any(x => x.IsPortable && x.IsApplicableForCurrentPlatform()))
                     {
                         var content = build.PublishedAt is DateTime dt ?
-                            $"{build.Version} (released {GetAge(dt)})" :
+                            string.Format(StringResources.BuildListing, build.Version, GetAge(dt)) :
                             build.Version;
                         items.Add(new ComboBoxItem() { Content = content, Tag = build });
                     }

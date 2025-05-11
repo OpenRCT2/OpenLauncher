@@ -66,4 +66,7 @@
   <data name="Years" xml:space="preserve">
     <value>{0} jaren geleden</value>
   </data>
+  <data name="BuildListing" xml:space="preserve">
+    <value>{0} ({1} vrijgegeven)</value>
+  </data>
 </root>

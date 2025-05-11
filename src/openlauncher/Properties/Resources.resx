@@ -66,4 +66,7 @@
   <data name="Years" xml:space="preserve">
     <value>{0} years ago</value>
   </data>
+  <data name="BuildListing" xml:space="preserve">
+    <value>{0} (released {1})</value>
+  </data>
 </root>

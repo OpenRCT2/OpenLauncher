@@ -176,5 +176,11 @@ namespace openlauncher.Properties {
                 return ResourceManager.GetString("Years", resourceCulture);
             }
         }
+
+        public static string BuildListing {
+            get {
+                return ResourceManager.GetString("BuildListing", resourceCulture);
+            }
+        }
     }
 }
