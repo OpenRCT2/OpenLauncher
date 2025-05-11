@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Threading;
 using System.Threading.Tasks;
 using Avalonia.Controls;
@@ -34,10 +35,13 @@ namespace openlauncher
                 updateBoxContainer.Opacity = 0;
             }
 
-            gameListView.Items = new[] {
-                new GameMenuItem(Game.OpenRCT2, "avares://openlauncher/resources/icon-openrct2.png"),
-                new GameMenuItem(Game.OpenLoco, "avares://openlauncher/resources/icon-openloco.png")
-            };
+            var openRCT2Game = new GameMenuItem(Game.OpenRCT2, "avares://openlauncher/resources/icon-openrct2.png");
+            var openLocoGame = new GameMenuItem(Game.OpenLoco, "avares://openlauncher/resources/icon-openloco.png");
+            if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows)) {
+                gameListView.Items = new [] {openRCT2Game, openLocoGame};
+            } else {
+                gameListView.Items = new [] {openRCT2Game};
+            }
         }
 
         private async void Window_Opened(object sender, EventArgs e)
