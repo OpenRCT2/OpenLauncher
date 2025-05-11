@@ -17,26 +17,12 @@ namespace IntelOrca.OpenLauncher.Core
 
         private readonly Game _game;
 
+        private string VersionFilePath => Path.Combine(_game.BinPath, ".version");
+
+
         public InstallService(Game game)
         {
             _game = game;
-        }
-
-        public string BinPath
-        {
-            get
-            {
-                var localAppData = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
-                return Path.Combine(localAppData, _game.Name, "bin");
-            }
-        }
-
-        public string VersionFilePath
-        {
-            get
-            {
-                return Path.Combine(BinPath, ".version");
-            }
         }
 
         public string ExecutablePath
@@ -45,7 +31,7 @@ namespace IntelOrca.OpenLauncher.Core
             {
                 var isWindows = RuntimeInformation.IsOSPlatform(OSPlatform.Windows);
                 var binaryName = isWindows ? $"{_game.BinaryName}.exe" : _game.BinaryName;
-                return Path.Combine(BinPath, binaryName);
+                return Path.Combine(_game.BinPath, binaryName);
             }
         }
 
@@ -127,8 +113,8 @@ namespace IntelOrca.OpenLauncher.Core
                 ct.ThrowIfCancellationRequested();
 
                 // Backup old bin directory
-                var binDirectory = BinPath;
-                var backupDirectory = BinPath + ".backup";
+                var binDirectory = _game.BinPath;
+                var backupDirectory = _game.BinPath + ".backup";
                 if (shell.DirectoryExists(binDirectory))
                 {
                     shell.MoveDirectory(binDirectory, backupDirectory);

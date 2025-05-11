@@ -6,38 +6,24 @@ namespace IntelOrca.OpenLauncher.Core
 {
     public class Game
     {
-        public static Game OpenRCT2 => new Game("OpenRCT2", "openrct2", true, new RepositoryName("OpenRCT2", "OpenRCT2"), new RepositoryName("OpenRCT2", "OpenRCT2-binaries"));
-        public static Game OpenLoco => new Game("OpenLoco", "openloco", false, new RepositoryName("OpenLoco", "OpenLoco"));
+        public static Game OpenRCT2 => new Game("OpenRCT2", "openrct2", new RepositoryName("OpenRCT2", "OpenRCT2"), new RepositoryName("OpenRCT2", "OpenRCT2-binaries"));
+        public static Game OpenLoco => new Game("OpenLoco", "openloco", new RepositoryName("OpenLoco", "OpenLoco"));
 
         public string Name { get; }
         public string BinaryName { get; }
-        public string DefaultLocation { get; }
+        public string BinPath { get; }
         public RepositoryName ReleaseRepository { get; set; }
         public RepositoryName? DevelopRepository { get; set; }
 
-        private Game(string name, string binaryName, bool usesDocuments, RepositoryName releaseRepo, RepositoryName? developRepo = null)
+        private Game(string name, string binaryName, RepositoryName releaseRepo, RepositoryName? developRepo = null)
         {
             Name = name;
             BinaryName = binaryName;
 
-            var root = GetLocation(usesDocuments);
-            DefaultLocation = Path.Combine(root, name);
+            var localAppData = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
+            BinPath = Path.Combine(localAppData, name, "bin");
             ReleaseRepository = releaseRepo;
             DevelopRepository = developRepo;
-        }
-
-        private string GetLocation(bool usesDocuments)
-        {
-            if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
-            {
-                return usesDocuments ?
-                    Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) :
-                    Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
-            }
-            else
-            {
-                return Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
-            }
         }
     }
 
