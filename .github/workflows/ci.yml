@@ -11,7 +11,7 @@ jobs:
           rid: linux-x64
         - os: windows
           rid: win-x64
-        - os: macos
+        - os: macos-15
           rid: macos-universal
 
     runs-on: ${{ matrix.os }}-latest
