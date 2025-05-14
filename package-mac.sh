@@ -3,8 +3,8 @@
 set -e
 trap 'echo "Error packaging app"; exit 1' ERR
 
-APP_NAME="./src/openlauncher/bin/Release/net8.0/macos-universal/OpenLauncher.app"
-PUBLISH_OUTPUT_DIRECTORY="./src/openlauncher/bin/Release/net8.0/macos-universal/."
+APP_NAME="./src/openlauncher/bin/Release/net9.0/macos-universal/OpenLauncher.app"
+PUBLISH_OUTPUT_DIRECTORY="./src/openlauncher/bin/Release/net9.0/macos-universal/."
 
 INFO_PLIST="./info.plist"
 
@@ -43,4 +43,4 @@ mkdir "$PUBLISH_OUTPUT_DIRECTORY/publish"
 
 echo "Zipping OpenLauncher.app..."
 
-ditto -c -k --keepParent "./src/openlauncher/bin/Release/net8.0/macos-universal/OpenLauncher.app" "./src/openlauncher/bin/Release/net8.0/macos-universal/publish/OpenLauncher.zip"
+ditto -c -k --keepParent "./src/openlauncher/bin/Release/net9.0/macos-universal/OpenLauncher.app" "./src/openlauncher/bin/Release/net9.0/macos-universal/publish/OpenLauncher.zip"
