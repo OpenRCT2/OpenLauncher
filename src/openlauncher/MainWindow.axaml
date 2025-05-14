@@ -99,7 +99,7 @@
                             </Grid>
                             <CheckBox x:Name="showPreReleaseCheckbox"
                                       Margin="0,4"
-                                      Content="{x:Static p:Resources.ShowPreReleaseVersions}"
+                                      Content="{x:Static p:Resources.ShowDevelopmentVersions}"
                                       Checked="showPreReleaseCheckbox_Changed"
                                       Unchecked="showPreReleaseCheckbox_Changed" />
                         </StackPanel>

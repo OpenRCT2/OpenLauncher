@@ -18,8 +18,8 @@
   <data name="Download" xml:space="preserve">
     <value>Downloaden</value>
   </data>
-  <data name="ShowPreReleaseVersions" xml:space="preserve">
-    <value>Toon pre-releases</value>
+  <data name="ShowDevelopmentVersions" xml:space="preserve">
+    <value>Ontwikkelversies tonen</value>
   </data>
   <data name="Update" xml:space="preserve">
     <value>Update</value>

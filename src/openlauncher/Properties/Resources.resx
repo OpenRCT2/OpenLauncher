@@ -18,8 +18,8 @@
   <data name="Download" xml:space="preserve">
     <value>Download</value>
   </data>
-  <data name="ShowPreReleaseVersions" xml:space="preserve">
-    <value>Show pre-release versions</value>
+  <data name="ShowDevelopmentVersions" xml:space="preserve">
+    <value>Show development versions</value>
   </data>
   <data name="Update" xml:space="preserve">
     <value>Update</value>

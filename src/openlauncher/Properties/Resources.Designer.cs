@@ -81,9 +81,9 @@ namespace openlauncher.Properties {
             }
         }
         
-        public static string ShowPreReleaseVersions {
+        public static string ShowDevelopmentVersions {
             get {
-                return ResourceManager.GetString("ShowPreReleaseVersions", resourceCulture);
+                return ResourceManager.GetString("ShowDevelopmentVersions", resourceCulture);
             }
         }
         

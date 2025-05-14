@@ -18,7 +18,7 @@
   <data name="Download" xml:space="preserve">
     <value>Télécharger</value>
   </data>
-  <data name="ShowPreReleaseVersions" xml:space="preserve">
+  <data name="ShowDevelopmentVersions" xml:space="preserve">
     <value>Montrer les versions instables</value>
   </data>
   <data name="Update" xml:space="preserve">
