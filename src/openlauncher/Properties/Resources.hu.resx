@@ -19,7 +19,7 @@
     <value>Letöltés</value>
   </data>
   <data name="ShowDevelopmentVersions" xml:space="preserve">
-    <value>Mutassa a kiadás előtti verziókat</value>
+    <value>Fejlesztői verziók megjelenítése</value>
   </data>
   <data name="Update" xml:space="preserve">
     <value>Frissítés</value>
@@ -65,5 +65,8 @@
   </data>
   <data name="Years" xml:space="preserve">
     <value>{0} éve</value>
+  </data>
+  <data name="BuildListing" xml:space="preserve">
+    <value>{0} ({1} adták ki)</value>
   </data>
 </root>
