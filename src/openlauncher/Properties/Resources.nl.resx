@@ -31,7 +31,7 @@
     <value>Er is update voor de launcher beschikbaar.</value>
   </data>
   <data name="FailedToLaunchGame" xml:space="preserve">
-    <value>Starten mislukt {0}</value>
+    <value>Starten van ‘{0}’ is mislukt.</value>
   </data>
   <data name="DownloadBuildFailedTitle" xml:space="preserve">
     <value>Kon de build niet downloaden</value>
