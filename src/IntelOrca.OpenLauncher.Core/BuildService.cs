@@ -55,8 +55,11 @@ namespace IntelOrca.OpenLauncher.Core
             return GetBuild(release, isRelease);
         }
 
-        private static Build GetBuild(Release release, bool isRelease) =>
-            new Build(isRelease, release.PublishedAt?.DateTime ?? DateTime.MinValue, release.TagName, GetAssets(release));
+        private static Build GetBuild(Release release, bool isRelease)
+        {
+            var date = DateTime.SpecifyKind(release.PublishedAt?.DateTime ?? DateTime.MinValue, DateTimeKind.Utc);
+            return new Build(isRelease, date, release.TagName, GetAssets(release));
+        }
 
         private static ImmutableArray<BuildAsset> GetAssets(Release release) =>
             release.Assets
