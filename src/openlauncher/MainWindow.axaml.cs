@@ -134,59 +134,50 @@ namespace openlauncher
             if (build.Version == currentVersion)
                 return;
         
-            var assets = build.Assets
-                .Where(x => x.IsPortable)
-                .Where(x => x.IsApplicableForCurrentPlatform())
-                .OrderBy(x => x, BuildAssetComparer.Default)
-                .ToArray();
-                
-            var asset = assets.FirstOrDefault();
-            if (asset == null)
-            {
-                return;
-            }
-            
-            var progress = new Progress<DownloadProgressReport>();
-            progress.ProgressChanged += (s, report) =>
-            {
-                Dispatcher.UIThread.Post(() =>
-                {
-                    downloadButton.Content = report.Status;
-                    if (report.Value is float value)
-                    {
-                        downloadProgress.IsIndeterminate = false;
-                        downloadProgress.Value = value;
-                    }
-                    else
-                    {
-                        downloadProgress.IsIndeterminate = true;
-                    }
-                });
-            };
-
-            var cts = new CancellationTokenSource();
-            await _selectedMenuItem.InstallService.DownloadVersion(
-                new DownloadService(),
-                new Shell(),
-                build.Version,
-                asset.Uri,
-                progress,
-                cts.Token);
-            await RefreshInstalledVersionAsync();
-        }
-
-        private async void downloadButton_Click(object sender, RoutedEventArgs e)
-        {
             try
             {
                 downloadProgress.IsVisible = true;
                 SetAllInteractionEnabled(false);
 
-                var selectedItem = versionDropdown.SelectedItem as ComboBoxItem;
-                if (selectedItem?.Tag is Build build)
+                var assets = build.Assets
+                    .Where(x => x.IsPortable)
+                    .Where(x => x.IsApplicableForCurrentPlatform())
+                    .OrderBy(x => x, BuildAssetComparer.Default)
+                    .ToArray();
+                    
+                var asset = assets.FirstOrDefault();
+                if (asset == null)
                 {
-                    DownloadBuild(build);
+                    return;
                 }
+                
+                var progress = new Progress<DownloadProgressReport>();
+                progress.ProgressChanged += (s, report) =>
+                {
+                    Dispatcher.UIThread.Post(() =>
+                    {
+                        downloadButton.Content = report.Status;
+                        if (report.Value is float value)
+                        {
+                            downloadProgress.IsIndeterminate = false;
+                            downloadProgress.Value = value;
+                        }
+                        else
+                        {
+                            downloadProgress.IsIndeterminate = true;
+                        }
+                    });
+                };
+    
+                var cts = new CancellationTokenSource();
+                await _selectedMenuItem.InstallService.DownloadVersion(
+                    new DownloadService(),
+                    new Shell(),
+                    build.Version,
+                    asset.Uri,
+                    progress,
+                    cts.Token);
+                await RefreshInstalledVersionAsync();
             }
             catch (Exception ex)
             {
@@ -197,6 +188,15 @@ namespace openlauncher
                 downloadButton.Content = StringResources.Download;
                 downloadProgress.IsVisible = false;
                 SetAllInteractionEnabled(true);
+            }
+        }
+
+        private async void downloadButton_Click(object sender, RoutedEventArgs e)
+        {
+            var selectedItem = versionDropdown.SelectedItem as ComboBoxItem;
+            if (selectedItem?.Tag is Build build)
+            {
+                DownloadBuild(build);
             }
         }
 
