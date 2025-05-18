@@ -47,8 +47,12 @@ namespace openlauncher
 
         private async void Window_Opened(object sender, EventArgs e)
         {
-            showPreReleaseCheckbox.IsChecked = _configService.PreReleaseChecked;
+            showDevelopmentVersionsCheckbox.IsChecked = _configService.PreReleaseChecked;
+            autoUpdateGameCheckbox.IsChecked = AutoUpdateEnabled();
             gameListView.SelectedIndex = _configService.SelectingGame;
+            versionDropdown.IsEnabled = !AutoUpdateEnabled();
+            downloadButton.IsEnabled = !AutoUpdateEnabled();
+
             _ready = true;
             var selectedItem = gameListView.SelectedItem as GameMenuItem;
             await SetPageAsync(selectedItem);
@@ -105,74 +109,99 @@ namespace openlauncher
             await SetPageAsync(gameListView.SelectedItem as GameMenuItem);
         }
 
-        private async void showPreReleaseCheckbox_Changed(object sender, RoutedEventArgs e)
+        private async void showDevelopmentVersionsCheckbox_Changed(object sender, RoutedEventArgs e)
         {
             if (!_ready)
                 return;
-            _configService.PreReleaseChecked = showPreReleaseCheckbox.IsChecked ?? false;
+            _configService.PreReleaseChecked = showDevelopmentVersionsCheckbox.IsChecked ?? false;
             await RefreshAvailableVersionsAsync();
         }
-
-        private async void downloadButton_Click(object sender, RoutedEventArgs e)
+        
+        private void autoUpdateGameCheckbox_Changed(object sender, RoutedEventArgs e)
+        {
+            if (!_ready)
+                return;
+            SetAutoUpdateEnabled(autoUpdateGameCheckbox.IsChecked ?? false);
+            SetAllInteractionEnabled(true);
+            
+            if (AutoUpdateEnabled())
+            {
+                InstallLatestBuildFromVersionDropdown();
+            }
+        }
+               
+        private void downloadButton_Click(object sender, RoutedEventArgs e)
+        {
+            InstallLatestBuildFromVersionDropdown();
+        }
+        
+        private async void InstallLatestBuildFromVersionDropdown()
         {
             if (_selectedMenuItem == null)
                 return;
-
-            try
+        
+            var selectedItem = versionDropdown.SelectedItem as ComboBoxItem;
+            if (selectedItem?.Tag is Build build)
             {
-                downloadProgress.IsVisible = true;
-                SetAllInteractionEnabled(false);
-
-                var selectedItem = versionDropdown.SelectedItem as ComboBoxItem;
-                if (selectedItem?.Tag is Build build)
+                try
                 {
+                    var currentVersion = await _selectedMenuItem.InstallService.GetCurrentVersionAsync();
+                    if (build.Version == currentVersion)
+                        return;
+
+                    downloadProgress.IsVisible = true;
+                    SetAllInteractionEnabled(false);
+    
                     var assets = build.Assets
                         .Where(x => x.IsPortable)
                         .Where(x => x.IsApplicableForCurrentPlatform())
                         .OrderBy(x => x, BuildAssetComparer.Default)
                         .ToArray();
+                        
                     var asset = assets.FirstOrDefault();
-                    if (asset != null)
+                    if (asset == null)
                     {
-                        var progress = new Progress<DownloadProgressReport>();
-                        progress.ProgressChanged += (s, report) =>
-                        {
-                            Dispatcher.UIThread.Post(() =>
-                            {
-                                downloadButton.Content = report.Status;
-                                if (report.Value is float value)
-                                {
-                                    downloadProgress.IsIndeterminate = false;
-                                    downloadProgress.Value = value;
-                                }
-                                else
-                                {
-                                    downloadProgress.IsIndeterminate = true;
-                                }
-                            });
-                        };
-
-                        var cts = new CancellationTokenSource();
-                        await _selectedMenuItem.InstallService.DownloadVersion(
-                            new DownloadService(),
-                            new Shell(),
-                            build.Version,
-                            asset.Uri,
-                            progress,
-                            cts.Token);
-                        await RefreshInstalledVersionAsync();
+                        return;
                     }
+                    
+                    var progress = new Progress<DownloadProgressReport>();
+                    progress.ProgressChanged += (s, report) =>
+                    {
+                        Dispatcher.UIThread.Post(() =>
+                        {
+                            downloadButton.Content = report.Status;
+                            if (report.Value is float value)
+                            {
+                                downloadProgress.IsIndeterminate = false;
+                                downloadProgress.Value = value;
+                            }
+                            else
+                            {
+                                downloadProgress.IsIndeterminate = true;
+                            }
+                        });
+                    };
+        
+                    var cts = new CancellationTokenSource();
+                    await _selectedMenuItem.InstallService.DownloadVersion(
+                        new DownloadService(),
+                        new Shell(),
+                        build.Version,
+                        asset.Uri,
+                        progress,
+                        cts.Token);
+                    await RefreshInstalledVersionAsync();
                 }
-            }
-            catch (Exception ex)
-            {
-                ShowError(StringResources.DownloadBuildFailedTitle, ex);
-            }
-            finally
-            {
-                downloadButton.Content = StringResources.Download;
-                downloadProgress.IsVisible = false;
-                SetAllInteractionEnabled(true);
+                catch (Exception ex)
+                {
+                    ShowError(StringResources.DownloadBuildFailedTitle, ex);
+                }
+                finally
+                {
+                    downloadButton.Content = StringResources.Download;
+                    downloadProgress.IsVisible = false;
+                    SetAllInteractionEnabled(true);
+                }
             }
         }
 
@@ -232,7 +261,7 @@ namespace openlauncher
                 versionDropdown.IsHitTestVisible = false;
 
                 // Refresh builds
-                var showDevelop = showPreReleaseCheckbox.IsChecked ?? false;
+                var showDevelop = showDevelopmentVersionsCheckbox.IsChecked ?? false;
                 var builds = _selectedMenuItem.Builds;
                 if (builds.IsDefault || (showDevelop && !_selectedMenuItem.BuildsIncludeDevelop))
                 {
@@ -262,8 +291,12 @@ namespace openlauncher
                     versionDropdown.SelectedIndex = 0;
                     if (!_isBusy)
                     {
-                        downloadButton.IsEnabled = true;
+                        downloadButton.IsEnabled = !AutoUpdateEnabled();
                         versionDropdown.IsHitTestVisible = true;
+                        if (AutoUpdateEnabled())
+                        {
+                            InstallLatestBuildFromVersionDropdown();
+                        }
                     }
                 }
             }
@@ -337,18 +370,46 @@ namespace openlauncher
             gameListView.IsEnabled = value;
             updateButton.IsEnabled = value;
             versionDropdown.IsHitTestVisible = value && buildsAvailable;
-            showPreReleaseCheckbox.IsEnabled = value;
+            showDevelopmentVersionsCheckbox.IsEnabled = value;
+            autoUpdateGameCheckbox.IsEnabled = value;
 
             if (value)
             {
                 playButton.IsEnabled = _selectedMenuItem?.InstallService.CanLaunch() ?? false;
-                downloadButton.IsEnabled = buildsAvailable;
+                downloadButton.IsEnabled = buildsAvailable && !AutoUpdateEnabled();
+                versionDropdown.IsEnabled = !AutoUpdateEnabled();
             }
             else
             {
                 playButton.IsEnabled = value;
                 downloadButton.IsEnabled = value;
             }
+        }
+        
+        private bool AutoUpdateEnabled()
+        {
+            if (_selectedMenuItem == null)
+                return false;
+                
+            var propertyName = "AutoUpdate" + _selectedMenuItem.Game.Name;
+            var property = _configService.GetType().GetProperty(propertyName);
+            if (property == null)
+                return false;
+                
+            return (bool)(property.GetValue(_configService) ?? false);
+        }
+        
+        private void SetAutoUpdateEnabled(bool on)
+        {
+            if (_selectedMenuItem == null)
+                return;
+                
+            var propertyName = "AutoUpdate" + _selectedMenuItem.Game.Name;
+            var property = _configService.GetType().GetProperty(propertyName);
+            if (property == null)
+                return;
+                
+            property.SetValue(_configService, on);
         }
 
         private static string GetAge(DateTime dt)
