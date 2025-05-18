@@ -58,6 +58,16 @@ namespace IntelOrca.OpenLauncher.Core
                 SaveConfig();
             }
         }
+        
+        public bool AutoUpdateGame
+        {
+            get => _config.AutoUpdateGame;
+            set
+            {
+                _config.AutoUpdateGame = value;
+                SaveConfig();
+            }
+        }
 
         public int SelectingGame
         {
@@ -73,6 +83,7 @@ namespace IntelOrca.OpenLauncher.Core
     internal struct Config
     {
         public bool PreReleaseChecked { get; set; }
+        public bool AutoUpdateGame { get; set; }
         public int SelectingGame { get; set; }
     }
 }

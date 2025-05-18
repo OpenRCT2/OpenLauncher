@@ -21,6 +21,9 @@
   <data name="ShowDevelopmentVersions" xml:space="preserve">
     <value>Show development versions</value>
   </data>
+  <data name="AutoUpdateGame" xml:space="preserve">
+    <value>Automatically install updates</value>
+  </data>
   <data name="Update" xml:space="preserve">
     <value>Update</value>
   </data>

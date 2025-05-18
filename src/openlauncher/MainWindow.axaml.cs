@@ -47,8 +47,12 @@ namespace openlauncher
 
         private async void Window_Opened(object sender, EventArgs e)
         {
-            showPreReleaseCheckbox.IsChecked = _configService.PreReleaseChecked;
+            showDevelopmentVersionsCheckbox.IsChecked = _configService.PreReleaseChecked;
+            autoUpdateGameCheckbox.IsChecked = _configService.AutoUpdateGame;
             gameListView.SelectedIndex = _configService.SelectingGame;
+            versionDropdown.IsEnabled = !_configService.AutoUpdateGame;
+            downloadButton.IsEnabled = !_configService.AutoUpdateGame;
+
             _ready = true;
             var selectedItem = gameListView.SelectedItem as GameMenuItem;
             await SetPageAsync(selectedItem);
@@ -105,19 +109,74 @@ namespace openlauncher
             await SetPageAsync(gameListView.SelectedItem as GameMenuItem);
         }
 
-        private async void showPreReleaseCheckbox_Changed(object sender, RoutedEventArgs e)
+        private async void showDevelopmentVersionsCheckbox_Changed(object sender, RoutedEventArgs e)
         {
             if (!_ready)
                 return;
-            _configService.PreReleaseChecked = showPreReleaseCheckbox.IsChecked ?? false;
+            _configService.PreReleaseChecked = showDevelopmentVersionsCheckbox.IsChecked ?? false;
             await RefreshAvailableVersionsAsync();
+        }
+        
+        private async void autoUpdateGameCheckbox_Changed(object sender, RoutedEventArgs e)
+        {
+            if (!_ready)
+                return;
+            _configService.AutoUpdateGame = autoUpdateGameCheckbox.IsChecked ?? false;
+            SetAllInteractionEnabled(true);
+        }
+               
+        private async void DownloadBuild(Build build)
+        {
+            if (_selectedMenuItem == null)
+                return;
+                
+            var currentVersion = await _selectedMenuItem.InstallService.GetCurrentVersionAsync();
+            if (build.Version == currentVersion)
+                return;
+        
+            var assets = build.Assets
+                .Where(x => x.IsPortable)
+                .Where(x => x.IsApplicableForCurrentPlatform())
+                .OrderBy(x => x, BuildAssetComparer.Default)
+                .ToArray();
+                
+            var asset = assets.FirstOrDefault();
+            if (asset == null)
+            {
+                return;
+            }
+            
+            var progress = new Progress<DownloadProgressReport>();
+            progress.ProgressChanged += (s, report) =>
+            {
+                Dispatcher.UIThread.Post(() =>
+                {
+                    downloadButton.Content = report.Status;
+                    if (report.Value is float value)
+                    {
+                        downloadProgress.IsIndeterminate = false;
+                        downloadProgress.Value = value;
+                    }
+                    else
+                    {
+                        downloadProgress.IsIndeterminate = true;
+                    }
+                });
+            };
+
+            var cts = new CancellationTokenSource();
+            await _selectedMenuItem.InstallService.DownloadVersion(
+                new DownloadService(),
+                new Shell(),
+                build.Version,
+                asset.Uri,
+                progress,
+                cts.Token);
+            await RefreshInstalledVersionAsync();
         }
 
         private async void downloadButton_Click(object sender, RoutedEventArgs e)
         {
-            if (_selectedMenuItem == null)
-                return;
-
             try
             {
                 downloadProgress.IsVisible = true;
@@ -126,42 +185,7 @@ namespace openlauncher
                 var selectedItem = versionDropdown.SelectedItem as ComboBoxItem;
                 if (selectedItem?.Tag is Build build)
                 {
-                    var assets = build.Assets
-                        .Where(x => x.IsPortable)
-                        .Where(x => x.IsApplicableForCurrentPlatform())
-                        .OrderBy(x => x, BuildAssetComparer.Default)
-                        .ToArray();
-                    var asset = assets.FirstOrDefault();
-                    if (asset != null)
-                    {
-                        var progress = new Progress<DownloadProgressReport>();
-                        progress.ProgressChanged += (s, report) =>
-                        {
-                            Dispatcher.UIThread.Post(() =>
-                            {
-                                downloadButton.Content = report.Status;
-                                if (report.Value is float value)
-                                {
-                                    downloadProgress.IsIndeterminate = false;
-                                    downloadProgress.Value = value;
-                                }
-                                else
-                                {
-                                    downloadProgress.IsIndeterminate = true;
-                                }
-                            });
-                        };
-
-                        var cts = new CancellationTokenSource();
-                        await _selectedMenuItem.InstallService.DownloadVersion(
-                            new DownloadService(),
-                            new Shell(),
-                            build.Version,
-                            asset.Uri,
-                            progress,
-                            cts.Token);
-                        await RefreshInstalledVersionAsync();
-                    }
+                    DownloadBuild(build);
                 }
             }
             catch (Exception ex)
@@ -232,7 +256,7 @@ namespace openlauncher
                 versionDropdown.IsHitTestVisible = false;
 
                 // Refresh builds
-                var showDevelop = showPreReleaseCheckbox.IsChecked ?? false;
+                var showDevelop = showDevelopmentVersionsCheckbox.IsChecked ?? false;
                 var builds = _selectedMenuItem.Builds;
                 if (builds.IsDefault || (showDevelop && !_selectedMenuItem.BuildsIncludeDevelop))
                 {
@@ -262,8 +286,12 @@ namespace openlauncher
                     versionDropdown.SelectedIndex = 0;
                     if (!_isBusy)
                     {
-                        downloadButton.IsEnabled = true;
+                        downloadButton.IsEnabled = !_configService.AutoUpdateGame;
                         versionDropdown.IsHitTestVisible = true;
+                        if (_configService.AutoUpdateGame && builds.Length > 0)
+                        {
+                            DownloadBuild(builds[0]);
+                        }
                     }
                 }
             }
@@ -337,12 +365,14 @@ namespace openlauncher
             gameListView.IsEnabled = value;
             updateButton.IsEnabled = value;
             versionDropdown.IsHitTestVisible = value && buildsAvailable;
-            showPreReleaseCheckbox.IsEnabled = value;
+            showDevelopmentVersionsCheckbox.IsEnabled = value;
+            autoUpdateGameCheckbox.IsEnabled = value;
 
             if (value)
             {
                 playButton.IsEnabled = _selectedMenuItem?.InstallService.CanLaunch() ?? false;
-                downloadButton.IsEnabled = buildsAvailable;
+                downloadButton.IsEnabled = buildsAvailable && !_configService.AutoUpdateGame;
+                versionDropdown.IsEnabled = !_configService.AutoUpdateGame;
             }
             else
             {

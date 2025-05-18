@@ -87,6 +87,12 @@ namespace openlauncher.Properties {
             }
         }
         
+        public static string AutoUpdateGame {
+            get {
+                return ResourceManager.GetString("AutoUpdateGame", resourceCulture);
+            }
+        }
+        
         public static string Update {
             get {
                 return ResourceManager.GetString("Update", resourceCulture);

@@ -97,11 +97,16 @@
                                         Content="{x:Static p:Resources.Download}"
                                         Click="downloadButton_Click" />
                             </Grid>
-                            <CheckBox x:Name="showPreReleaseCheckbox"
+                            <CheckBox x:Name="showDevelopmentVersionsCheckbox"
                                       Margin="0,4"
                                       Content="{x:Static p:Resources.ShowDevelopmentVersions}"
-                                      Checked="showPreReleaseCheckbox_Changed"
-                                      Unchecked="showPreReleaseCheckbox_Changed" />
+                                      Checked="showDevelopmentVersionsCheckbox_Changed"
+                                      Unchecked="showDevelopmentVersionsCheckbox_Changed" />
+                            <CheckBox x:Name="autoUpdateGameCheckbox"
+                                      Margin="0,4"
+                                      Content="{x:Static p:Resources.AutoUpdateGame}"
+                                      Checked="autoUpdateGameCheckbox_Changed"
+                                      Unchecked="autoUpdateGameCheckbox_Changed" />
                         </StackPanel>
                     </StackPanel>
                 </Border>
