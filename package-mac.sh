@@ -8,7 +8,7 @@ PUBLISH_OUTPUT_DIRECTORY="./src/openlauncher/bin/Release/net8.0/macos-universal/
 
 INFO_PLIST="./info.plist"
 
-ICON_FILE="./src/openlauncher/resources/AppIcon.icns"
+ICON_FILE="./src/openlauncher/resources/logo-mac.icns"
 
 if [ -d "$APP_NAME" ]
 then
