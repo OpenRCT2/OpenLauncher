@@ -39,6 +39,8 @@ sed -i -e "s/APP_VERSION_NUMBER/$VERSION_NUMBER/" "$APP_NAME/Contents/Info.plist
 #For whatever reason, sed on macOS creates a backup file when replacing text, so we need to remove it
 rm  "$APP_NAME/Contents/Info.plist-e"
 
+codesign --sign - --force --deep "./src/openlauncher/bin/Release/net8.0/macos-universal/OpenLauncher.app"
+
 mkdir "$PUBLISH_OUTPUT_DIRECTORY/publish"
 
 echo "Zipping OpenLauncher.app..."
