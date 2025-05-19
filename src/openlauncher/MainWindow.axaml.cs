@@ -117,7 +117,7 @@ namespace openlauncher
             await RefreshAvailableVersionsAsync();
         }
         
-        private async void autoUpdateGameCheckbox_Changed(object sender, RoutedEventArgs e)
+        private void autoUpdateGameCheckbox_Changed(object sender, RoutedEventArgs e)
         {
             if (!_ready)
                 return;
@@ -191,7 +191,7 @@ namespace openlauncher
             }
         }
 
-        private async void downloadButton_Click(object sender, RoutedEventArgs e)
+        private void downloadButton_Click(object sender, RoutedEventArgs e)
         {
             var selectedItem = versionDropdown.SelectedItem as ComboBoxItem;
             if (selectedItem?.Tag is Build build)
