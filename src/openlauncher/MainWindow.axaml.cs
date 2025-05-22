@@ -143,12 +143,12 @@ namespace openlauncher
             var selectedItem = versionDropdown.SelectedItem as ComboBoxItem;
             if (selectedItem?.Tag is Build build)
             {
-                var currentVersion = await _selectedMenuItem.InstallService.GetCurrentVersionAsync();
-                if (build.Version == currentVersion)
-                    return;
-            
                 try
                 {
+                    var currentVersion = await _selectedMenuItem.InstallService.GetCurrentVersionAsync();
+                    if (build.Version == currentVersion)
+                        return;
+
                     downloadProgress.IsVisible = true;
                     SetAllInteractionEnabled(false);
     
