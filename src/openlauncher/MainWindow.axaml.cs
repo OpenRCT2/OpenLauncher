@@ -48,10 +48,10 @@ namespace openlauncher
         private async void Window_Opened(object sender, EventArgs e)
         {
             showDevelopmentVersionsCheckbox.IsChecked = _configService.PreReleaseChecked;
-            autoUpdateGameCheckbox.IsChecked = _configService.AutoUpdateGame;
+            autoUpdateGameCheckbox.IsChecked = AutoUpdateEnabled();
             gameListView.SelectedIndex = _configService.SelectingGame;
-            versionDropdown.IsEnabled = !_configService.AutoUpdateGame;
-            downloadButton.IsEnabled = !_configService.AutoUpdateGame;
+            versionDropdown.IsEnabled = !AutoUpdateEnabled();
+            downloadButton.IsEnabled = !AutoUpdateEnabled();
 
             _ready = true;
             var selectedItem = gameListView.SelectedItem as GameMenuItem;
@@ -121,10 +121,10 @@ namespace openlauncher
         {
             if (!_ready)
                 return;
-            _configService.AutoUpdateGame = autoUpdateGameCheckbox.IsChecked ?? false;
+            SetAutoUpdateEnabled(autoUpdateGameCheckbox.IsChecked ?? false);
             SetAllInteractionEnabled(true);
             
-            if (_configService.AutoUpdateGame)
+            if (AutoUpdateEnabled())
             {
                 InstallLatestBuildFromVersionDropdown();
             }
@@ -291,9 +291,9 @@ namespace openlauncher
                     versionDropdown.SelectedIndex = 0;
                     if (!_isBusy)
                     {
-                        downloadButton.IsEnabled = !_configService.AutoUpdateGame;
+                        downloadButton.IsEnabled = !AutoUpdateEnabled();
                         versionDropdown.IsHitTestVisible = true;
-                        if (_configService.AutoUpdateGame)
+                        if (AutoUpdateEnabled())
                         {
                             InstallLatestBuildFromVersionDropdown();
                         }
@@ -376,14 +376,40 @@ namespace openlauncher
             if (value)
             {
                 playButton.IsEnabled = _selectedMenuItem?.InstallService.CanLaunch() ?? false;
-                downloadButton.IsEnabled = buildsAvailable && !_configService.AutoUpdateGame;
-                versionDropdown.IsEnabled = !_configService.AutoUpdateGame;
+                downloadButton.IsEnabled = buildsAvailable && !AutoUpdateEnabled();
+                versionDropdown.IsEnabled = !AutoUpdateEnabled();
             }
             else
             {
                 playButton.IsEnabled = value;
                 downloadButton.IsEnabled = value;
             }
+        }
+        
+        private bool AutoUpdateEnabled()
+        {
+            if (_selectedMenuItem == null)
+                return false;
+                
+            var propertyName = "AutoUpdate" + _selectedMenuItem.Game.Name;
+            var property = _configService.GetType().GetProperty(propertyName);
+            if (property == null)
+                return false;
+                
+            return (bool)(property.GetValue(_configService) ?? false);
+        }
+        
+        private void SetAutoUpdateEnabled(bool on)
+        {
+            if (_selectedMenuItem == null)
+                return;
+                
+            var propertyName = "AutoUpdate" + _selectedMenuItem.Game.Name;
+            var property = _configService.GetType().GetProperty(propertyName);
+            if (property == null)
+                return;
+                
+            property.SetValue(_configService, on);
         }
 
         private static string GetAge(DateTime dt)
