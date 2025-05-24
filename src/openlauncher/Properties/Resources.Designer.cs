@@ -188,5 +188,14 @@ namespace openlauncher.Properties {
                 return ResourceManager.GetString("BuildListing", resourceCulture);
             }
         }
+
+        public static string LauncherVersion
+        {
+            get
+            {
+                var version = System.Reflection.Assembly.GetExecutingAssembly().GetName().Version;
+                return OpenLauncher + " v" + version.Major + "." + version.Minor + "." + version.Build;
+            }
+        }
     }
 }

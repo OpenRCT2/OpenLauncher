@@ -49,9 +49,17 @@
         <Border Grid.Column="1">
             <StackPanel>
                 <Border Padding="4">
-                    <TextBlock x:Name="titleTextBlock"
-                               FontSize="28"
-                               Text=" " />
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Grid.Column="0" x:Name="titleTextBlock"
+                                   FontSize="28"
+                                   Text=" " />
+                        <TextBlock Grid.Column="2" x:Name="OpenLauncherVersion" Text="{x:Static p:Resources.LauncherVersion}"/>
+                    </Grid>
                 </Border>
                 <Border Padding="4">
                     <StackPanel Orientation="Vertical">
