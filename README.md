@@ -20,7 +20,7 @@ A launcher for automatically downloading the latest, or specific versions of [Op
    
 # 🔨 Building
 
-**Open Launcher** is written in C# using the [AvaloniaUI](http://avaloniaui.net) framework. The application currently targets [.NET 8](https://dotnet.microsoft.com) and is typically distributed as a self contained executable.
+**OpenLauncher** is written in C# using the [AvaloniaUI](http://avaloniaui.net) framework. The application currently targets [.NET 8](https://dotnet.microsoft.com) and is typically distributed as a self contained executable.
 
 ### Prerequisites
 * [.NET 8 SDK](https://dotnet.microsoft.com/en-us/download/dotnet/8.0)
@@ -38,4 +38,4 @@ Alternatively, open `openlauncher.sln` in Visual Studio. Installing the [extensi
 
 
 # ⚖️ Licence
-**Open Launcher** is licensed under the MIT License.
+**OpenLauncher** is licensed under the MIT License.

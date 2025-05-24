@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <root>
   <data name="OpenLauncher" xml:space="preserve">
-    <value>Open Launcher</value>
+    <value>OpenLauncher</value>
   </data>
   <data name="InstalledLabel" xml:space="preserve">
     <value>Installiert:</value>
