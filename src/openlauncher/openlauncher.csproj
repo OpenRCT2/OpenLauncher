@@ -1,6 +1,6 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <AssemblyVersion>0.4.1</AssemblyVersion>
+    <AssemblyVersion>0.5.0</AssemblyVersion>
     <Copyright>Copyright © Ted John 2022, OpenLauncher developers 2024-2025</Copyright>
     <Product>Launcher for OpenRCT2 and OpenLoco</Product>
   </PropertyGroup>
