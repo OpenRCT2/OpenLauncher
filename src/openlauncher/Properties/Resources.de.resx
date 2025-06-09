@@ -19,7 +19,10 @@
     <value>Download</value>
   </data>
   <data name="ShowDevelopmentVersions" xml:space="preserve">
-    <value>Zeige vorab-veröffentlichte Versionen</value>
+    <value>Zeige Vorab-Versionen</value>
+  </data>
+  <data name="AutoUpdateGame" xml:space="preserve">
+    <value>Updates automatisch installieren</value>
   </data>
   <data name="Update" xml:space="preserve">
     <value>Update</value>
@@ -65,5 +68,8 @@
   </data>
   <data name="Years" xml:space="preserve">
     <value>vor {0} Jahren</value>
+  </data>
+  <data name="BuildListing" xml:space="preserve">
+    <value>{0} (veröffentlicht {1})</value>
   </data>
 </root>
