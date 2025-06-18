@@ -4,10 +4,10 @@
     <value>OpenLauncher</value>
   </data>
   <data name="InstalledLabel" xml:space="preserve">
-    <value>Installée :</value>
+    <value>Installée :</value>
   </data>
   <data name="AvailableLabel" xml:space="preserve">
-    <value>Disponible :</value>
+    <value>Disponible :</value>
   </data>
   <data name="Unknown" xml:space="preserve">
     <value>(Inconnu)</value>
@@ -28,13 +28,13 @@
     <value>Mettre à jour</value>
   </data>
   <data name="LauncherUpdateTitle" xml:space="preserve">
-    <value>Mise à jour d'OpenLauncher disponible</value>
+    <value>Mise à jour d’OpenLauncher disponible</value>
   </data>
   <data name="LauncherUpdateMessage" xml:space="preserve">
-    <value>Une nouvelle mise à jour d'OpenLauncher est disponible au téléchargement.</value>
+    <value>Une nouvelle mise à jour d’OpenLauncher est disponible au téléchargement.</value>
   </data>
   <data name="FailedToLaunchGame" xml:space="preserve">
-    <value>Erreur lors du lancement : {0}</value>
+    <value>Erreur lors du lancement : {0}</value>
   </data>
   <data name="DownloadBuildFailedTitle" xml:space="preserve">
     <value>Impossible de télécharger la version</value>
