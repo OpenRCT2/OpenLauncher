@@ -21,11 +21,14 @@
   <data name="ShowDevelopmentVersions" xml:space="preserve">
     <value>Fejlesztői verziók megjelenítése</value>
   </data>
+  <data name="AutoUpdateGame" xml:space="preserve">
+    <value>Frissítések automatikus telepítése</value>
+  </data>
   <data name="Update" xml:space="preserve">
     <value>Frissítés</value>
   </data>
   <data name="LauncherUpdateTitle" xml:space="preserve">
-    <value>Launcher frissítés elérhető</value>
+    <value>Launcher frissítés érhető el</value>
   </data>
   <data name="LauncherUpdateMessage" xml:space="preserve">
     <value>Egy új launcher frissítés tölthető le.</value>
