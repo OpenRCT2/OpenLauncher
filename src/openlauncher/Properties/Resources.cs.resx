@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <data name="OpenLauncher" xml:space="preserve">
+    <value>OpenLauncher</value>
+  </data>
+  <data name="InstalledLabel" xml:space="preserve">
+    <value>Instalováno:</value>
+  </data>
+  <data name="AvailableLabel" xml:space="preserve">
+    <value>Dostupné:</value>
+  </data>
+  <data name="Unknown" xml:space="preserve">
+    <value>(Neznámé)</value>
+  </data>
+  <data name="Play" xml:space="preserve">
+    <value>Hrát</value>
+  </data>
+  <data name="Download" xml:space="preserve">
+    <value>Stáhnout</value>
+  </data>
+  <data name="ShowDevelopmentVersions" xml:space="preserve">
+    <value>Zobrazit vývojové verze</value>
+  </data>
+  <data name="AutoUpdateGame" xml:space="preserve">
+    <value>Automaticky instalovat akutualizace</value>
+  </data>
+  <data name="Update" xml:space="preserve">
+    <value>Aktualizace</value>
+  </data>
+  <data name="LauncherUpdateTitle" xml:space="preserve">
+    <value>Dostupná aktualizace Launcheru</value>
+  </data>
+  <data name="LauncherUpdateMessage" xml:space="preserve">
+    <value>Nový Launcher je k dispozici ke stažení.</value>
+  </data>
+  <data name="FailedToLaunchGame" xml:space="preserve">
+    <value>Selhalo spuštění {0}</value>
+  </data>
+  <data name="DownloadBuildFailedTitle" xml:space="preserve">
+    <value>Selhalo stažení sestavení</value>
+  </data>
+  <data name="Minute" xml:space="preserve">
+    <value>před minutou</value>
+  </data>
+  <data name="Minutes" xml:space="preserve">
+    <value>před {0} minutami</value>
+  </data>
+  <data name="Hour" xml:space="preserve">
+    <value>před hodinou</value>
+  </data>
+  <data name="Hours" xml:space="preserve">
+    <value>před {0} hodinami</value>
+  </data>
+  <data name="Day" xml:space="preserve">
+    <value>včera</value>
+  </data>
+  <data name="Days" xml:space="preserve">
+    <value>před {0} dny</value>
+  </data>
+  <data name="Month" xml:space="preserve">
+    <value>minulý měsíc</value>
+  </data>
+  <data name="Months" xml:space="preserve">
+    <value>před {0} měsíci</value>
+  </data>
+  <data name="Year" xml:space="preserve">
+    <value>loni</value>
+  </data>
+  <data name="Years" xml:space="preserve">
+    <value>před {0} lety</value>
+  </data>
+  <data name="BuildListing" xml:space="preserve">
+    <value>{0} (vydáno {1})</value>
+  </data>
+</root>
