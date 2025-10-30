@@ -47,15 +47,18 @@ namespace openlauncher
 
         private async void Window_Opened(object sender, EventArgs e)
         {
+            // Checked in SetPageAsync, so needs to be in order first.
             showDevelopmentVersionsCheckbox.IsChecked = _configService.PreReleaseChecked;
-            autoUpdateGameCheckbox.IsChecked = AutoUpdateEnabled();
             gameListView.SelectedIndex = _configService.SelectingGame;
-            versionDropdown.IsEnabled = !AutoUpdateEnabled();
-            downloadButton.IsEnabled = !AutoUpdateEnabled();
-
-            _ready = true;
             var selectedItem = gameListView.SelectedItem as GameMenuItem;
             await SetPageAsync(selectedItem);
+            
+            var autoupdate = AutoUpdateEnabled();
+            autoUpdateGameCheckbox.IsChecked = autoupdate;
+            versionDropdown.IsEnabled = !autoupdate;
+            downloadButton.IsEnabled = !autoupdate;
+
+            _ready = true;
 
             if (!Design.IsDesignMode)
             {
@@ -116,8 +119,8 @@ namespace openlauncher
             _configService.PreReleaseChecked = showDevelopmentVersionsCheckbox.IsChecked ?? false;
             await RefreshAvailableVersionsAsync();
         }
-        
-        private void autoUpdateGameCheckbox_Changed(object sender, RoutedEventArgs e)
+
+        private void AutoUpdateGameCheckboxHandler()
         {
             if (!_ready)
                 return;
@@ -128,6 +131,11 @@ namespace openlauncher
             {
                 InstallLatestBuildFromVersionDropdown();
             }
+        }
+        
+        private void autoUpdateGameCheckbox_Changed(object sender, RoutedEventArgs e)
+        {
+            AutoUpdateGameCheckboxHandler();
         }
                
         private void downloadButton_Click(object sender, RoutedEventArgs e)
