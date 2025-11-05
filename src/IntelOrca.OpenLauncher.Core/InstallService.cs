@@ -122,6 +122,10 @@ namespace IntelOrca.OpenLauncher.Core
                 // Backup old bin directory
                 var binDirectory = _game.BinPath;
                 var backupDirectory = _game.BinPath + ".backup";
+                
+                // The old dir may not have been cleaned up properly. (Function checks for existence);
+                shell.DeleteDirectory(backupDirectory);
+                
                 if (shell.DirectoryExists(binDirectory))
                 {
                     shell.MoveDirectory(binDirectory, backupDirectory);
