@@ -72,4 +72,10 @@
   <data name="BuildListing" xml:space="preserve">
     <value>{0} (vydáno {1})</value>
   </data>
+  <data name="StatusDownloading" xml:space="preserve">
+    <value>Stahuje se…</value>
+  </data>
+  <data name="StatusExtracting" xml:space="preserve">
+    <value>Rozbaluje se…</value>
+  </data> 
 </root>
