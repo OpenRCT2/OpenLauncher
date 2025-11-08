@@ -177,7 +177,7 @@ namespace openlauncher
                     {
                         Dispatcher.UIThread.Post(() =>
                         {
-                            downloadButton.Content = report.Status;
+                            downloadButton.Content = StringResources.GetString(report.Status);
                             if (report.Value is float value)
                             {
                                 downloadProgress.IsIndeterminate = false;

@@ -72,4 +72,10 @@
   <data name="BuildListing" xml:space="preserve">
     <value>{0} ({1} vrijgegeven)</value>
   </data>
+  <data name="StatusDownloading" xml:space="preserve">
+    <value>Downloaden…</value>
+  </data>
+  <data name="StatusExtracting" xml:space="preserve">
+    <value>Uitpakken…</value>
+  </data>
 </root>

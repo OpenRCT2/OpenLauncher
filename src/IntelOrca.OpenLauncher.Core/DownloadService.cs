@@ -8,7 +8,7 @@ namespace IntelOrca.OpenLauncher.Core
 {
     public class DownloadService
     {
-        private const string StatusDownloading = "Downloading";
+        private const string StatusDownloading = "StatusDownloading";
 
         public async Task<string> DownloadFileAsync(Uri uri, IProgress<DownloadProgressReport> progress, CancellationToken ct)
         {

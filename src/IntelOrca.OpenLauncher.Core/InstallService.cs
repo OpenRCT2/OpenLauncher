@@ -111,7 +111,7 @@ namespace IntelOrca.OpenLauncher.Core
             IProgress<DownloadProgressReport> progress,
             CancellationToken ct)
         {
-            const string StatusExtracting = "Extracting";
+            const string StatusExtracting = "StatusExtracting";
 
             var tempFile = await downloadService.DownloadFileAsync(uri, progress, ct).ConfigureAwait(false);
             try

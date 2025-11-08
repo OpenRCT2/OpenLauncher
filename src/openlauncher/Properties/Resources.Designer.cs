@@ -197,5 +197,22 @@ namespace openlauncher.Properties {
                 return OpenLauncher + " v" + version.Major + "." + version.Minor + "." + version.Build;
             }
         }
+        
+        public static string StatusDownloading {
+            get {
+                return ResourceManager.GetString("StatusDownloading", resourceCulture);
+            }
+        }
+        
+        public static string StatusExtracting {
+            get {
+                return ResourceManager.GetString("StatusDownloading", resourceCulture);
+            }
+        }
+
+        public static string GetString(string original)
+        {
+            return ResourceManager.GetString(original, resourceCulture);
+        }
     }
 }
