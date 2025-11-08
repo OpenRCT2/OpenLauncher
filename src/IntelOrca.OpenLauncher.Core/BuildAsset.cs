@@ -48,11 +48,13 @@ namespace IntelOrca.OpenLauncher.Core
                 {
                     return OSPlatform.Windows;
                 }
-                else if (Name.Contains("macos", StringComparison.OrdinalIgnoreCase))
+                else if (Name.Contains("macos", StringComparison.OrdinalIgnoreCase) || 
+                         Name.Equals("OpenLauncher.zip"))
                 {
                     return OSPlatform.OSX;
                 }
-                else if (Name.Contains("linux", StringComparison.OrdinalIgnoreCase))
+                else if (Name.Contains("linux", StringComparison.OrdinalIgnoreCase) ||
+                         Name.Equals("openlauncher"))
                 {
                     return OSPlatform.Linux;
                 }
