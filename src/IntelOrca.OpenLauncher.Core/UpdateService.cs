@@ -9,7 +9,7 @@ namespace IntelOrca.OpenLauncher.Core
 {
     public class UpdateService
     {
-        private static readonly RepositoryName Repository = new RepositoryName("IntelOrca", "OpenLauncher");
+        private static readonly RepositoryName Repository = new RepositoryName("OpenRCT2", "OpenLauncher");
 
         public async Task<UpdateCheckResult?> CheckUpdateAsync(BuildService buildService, Version currentVersion)
         {
