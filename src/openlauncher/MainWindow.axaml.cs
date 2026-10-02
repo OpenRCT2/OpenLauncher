@@ -39,11 +39,8 @@ namespace openlauncher
 
             var openRCT2Game = new GameMenuItem(Game.OpenRCT2, "avares://openlauncher/resources/icon-openrct2.png");
             var openLocoGame = new GameMenuItem(Game.OpenLoco, "avares://openlauncher/resources/icon-openloco.png");
-            if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows) || RuntimeInformation.IsOSPlatform(OSPlatform.OSX)) {
-                gameListView.Items = new [] {openRCT2Game, openLocoGame};
-            } else {
-                gameListView.Items = new [] {openRCT2Game};
-            }
+
+            gameListView.Items = new [] {openRCT2Game, openLocoGame};
         }
 
         private async void Window_Opened(object sender, EventArgs e)
